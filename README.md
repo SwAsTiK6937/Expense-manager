@@ -50,4 +50,17 @@ Built with a clean separation between frontend and backend, following real-world
 ---
 
 ## 📂 Project Structure
+expm/
+├── backend/ # Express API
+├── frontend/ # Next.js app
+├── docs/ # Deployment notes
+└── docker-compose.yml
+
+
+---
+
+
+
+
+
 
