@@ -1,147 +1,135 @@
-# Cloud-Based Expense Tracker
+Expense Manager 💸
 
-A SaaS-style personal finance web application for tracking daily expenses, categorizing spending, setting monthly budgets, and viewing analytics. Built for the cloud with a clear separation between frontend, backend API, and database.
+A cloud-ready full-stack expense tracking application.
 
-## Product Vision
+A modern personal finance web app for tracking daily expenses, setting budgets, and visualizing spending patterns. Built with a clean separation between frontend and backend, following real-world SaaS architecture.
 
-**"People don't know where their money goes."**
+✨ Features
+Authentication
 
-This app helps users:
-- Track daily expenses with categories (Food, Travel, Rent, Shopping, Entertainment, Custom)
-- Set monthly budgets and see remaining balance
-- View analytics: category breakdown (pie), spending over time (line), monthly comparison (bar)
-- Access data securely from anywhere via cloud infrastructure
+User registration & login
 
-Design language: **Notion UI + Mint functionality + Stripe dashboard polish** — minimal, clean, professional SaaS.
+JWT-based authentication
 
-## Architecture
+Passwords hashed with bcrypt
 
-```
-User Browser
-    ↓
-Frontend (Next.js) — S3 / Amplify on AWS
-    ↓
-Backend API (Express) — EC2 on AWS
-    ↓
-Database (PostgreSQL) — RDS on AWS
-```
+Expenses
 
-- **Frontend**: React (Next.js 14), Tailwind CSS, Recharts, dark/light mode, responsive.
-- **Backend**: Node.js + Express, REST API, JWT authentication, MVC-style structure, CloudWatch logging.
-- **Database**: PostgreSQL (RDS-ready schema in `backend/src/db/schema.sql`).
+Add, edit, delete expenses
 
-## Quick Start (Local)
+Categories: Food, Travel, Rent, Shopping, Entertainment, Custom
 
-### Prerequisites
+Filter by date & category
 
-- Node.js 18+
-- PostgreSQL 14+ (or use Docker)
+Budgets
 
-### 1. Database
+Set monthly budget
 
-Create a database and run the schema:
+View spent vs remaining
 
-```bash
-# If using Docker for PostgreSQL:
-docker run -d --name expense-pg -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=expense_tracker -p 5432:5432 postgres:15
+Progress indicator
 
-# Run migrations
+Analytics
+
+Category breakdown (pie chart)
+
+Spending over time (line chart)
+
+Monthly comparison (bar chart)
+
+🛠 Tech Stack
+Frontend
+
+Next.js 14
+
+React
+
+Tailwind CSS
+
+Recharts
+
+Responsive UI (dark/light mode)
+
+Backend
+
+Node.js + Express
+
+REST API
+
+JWT authentication
+
+MVC-style structure
+
+Database
+
+PostgreSQL
+
+📂 Project Structure
+expm/
+├── backend/      # Express API
+├── frontend/     # Next.js app
+├── docs/         # Deployment notes
+└── docker-compose.yml
+
+🚀 Getting Started (Local)
+1. Database (Docker)
+docker run -d --name expense-pg \
+  -e POSTGRES_PASSWORD=postgres \
+  -e POSTGRES_DB=expense_tracker \
+  -p 5432:5432 postgres:15
+
+2. Backend
 cd backend
 cp .env.example .env
-# Edit .env: set DATABASE_URL if needed (default: postgresql://postgres:postgres@localhost:5432/expense_tracker)
-npm install
-npm run db:migrate
-```
-
-### 2. Backend
-
-```bash
-cd backend
 npm install
 npm run dev
-```
 
-API runs at `http://localhost:4000`. Endpoints: `/api/auth/*`, `/api/expenses/*`, `/api/budgets`, `/api/analytics`, `/health`.
 
-### 3. Frontend
+Runs on: http://localhost:4000
 
-```bash
+3. Frontend
 cd frontend
 cp .env.example .env.local
-# Set NEXT_PUBLIC_API_URL=http://localhost:4000 (default)
 npm install
 npm run dev
-```
 
-Open `http://localhost:3000`.
 
-## Project Structure
+Open: http://localhost:3000
 
-```
-expm/
-├── backend/                 # Express API
-│   ├── src/
-│   │   ├── config/          # env, db
-│   │   ├── controllers/     # auth, expenses, budgets, analytics
-│   │   ├── middleware/     # auth, validate, requestLogger, errorHandler
-│   │   ├── routes/
-│   │   ├── db/              # schema.sql, migrate
-│   │   ├── utils/           # logger (CloudWatch-capable)
-│   │   └── index.ts
-│   ├── .env.example
-│   └── package.json
-├── frontend/                # Next.js app
-│   ├── src/
-│   │   ├── app/             # pages: landing, login, register, dashboard, analytics, profile
-│   │   ├── components/      # Nav, AddExpenseModal, BudgetCard
-│   │   ├── context/         # AuthContext
-│   │   └── lib/             # api client
-│   ├── .env.example
-│   └── package.json
-├── docs/
-│   └── AWS_DEPLOYMENT.md    # AWS setup: EC2, RDS, S3/Amplify, IAM, CloudWatch
-└── README.md
-```
+🔐 Security
 
-## Core Features
+JWT authentication
 
-- **Auth**: Register, login, logout. JWT stored in `localStorage`. Passwords hashed with bcrypt.
-- **Expenses**: Add, edit, delete, list with filters (date range, category). Categories: Food, Travel, Rent, Shopping, Entertainment, Custom.
-- **Budgets**: Set monthly budget; view spent, remaining, percentage used with progress bar.
-- **Analytics**: Total spent, average daily spend, highest category; pie (category breakdown), line (spending over time), bar (monthly comparison).
+No secrets in code (uses env variables)
 
-## Security
+Input validation on all APIs
 
-- JWT authentication; no credentials in code (env vars).
-- Input validation (express-validator) on all API inputs.
-- CORS enabled; in production restrict origin to your frontend URL.
-- Designed for IAM roles on EC2 (no hardcoded AWS keys in production).
+CORS enabled
 
-## Observability
+☁️ Cloud-Ready Design
 
-- Every API request is logged (method, path, status, duration).
-- Errors and warnings are logged.
-- When `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` are set and `NODE_ENV=production`, logs are sent to **AWS CloudWatch Logs** (log group configurable via `CLOUDWATCH_LOG_GROUP`).
+The project is structured to be deployable on cloud platforms:
 
-## Deployment on AWS
+Frontend → S3 / Vercel / Amplify
 
-See **[docs/AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md)** for:
+Backend → EC2 / Render / Railway
 
-- EC2: backend hosting, Node, process manager, env
-- RDS: PostgreSQL, security group, connection string
-- S3 + CloudFront or Amplify: frontend hosting
-- IAM: roles for EC2, CloudWatch
-- CloudWatch: log group, metrics (request count, errors)
+Database → RDS / Supabase
 
-## Future Extensions (Design Only)
+(See docs/AWS_DEPLOYMENT.md for detailed setup)
 
-The architecture is prepared for (not implemented):
+📈 Future Ideas
 
-- Email/SMS alerts (e.g. budget threshold)
-- AI spending insights (separate service calling API)
-- CSV export (new API route + download)
-- Mobile app (same REST API + JWT)
+Planned extensions (not implemented yet):
 
-## License
+CSV export
 
-Proprietary / Portfolio use.
+Email budget alerts
+
+AI spending insights
+
+Mobile app (same API)
+
+📄 License
+
+Portfolio / educational use.
