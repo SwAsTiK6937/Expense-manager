@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS monthly_budgets (
   UNIQUE(user_id, month, year)
 );
 
-CREATE INDEX idx_expenses_user_id ON expenses(user_id);
-CREATE INDEX idx_expenses_date ON expenses(date);
-CREATE INDEX idx_expenses_user_date ON expenses(user_id, date);
-CREATE INDEX idx_monthly_budgets_user ON monthly_budgets(user_id);
+CREATE INDEX IF NOT EXISTS idx_expenses_user_id ON expenses(user_id);
+CREATE INDEX IF NOT EXISTS idx_expenses_date ON expenses(date);
+CREATE INDEX IF NOT EXISTS idx_expenses_user_date ON expenses(user_id, date);
+CREATE INDEX IF NOT EXISTS idx_monthly_budgets_user ON monthly_budgets(user_id);
