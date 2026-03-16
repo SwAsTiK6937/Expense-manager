@@ -10,40 +10,38 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        brand: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
-        },
-        surface: {
-          light: 'rgba(255,255,255,0.7)',
-          dark: 'rgba(15,23,42,0.7)',
-        },
+        page: '#FAF8F3', // warm off-white, paper-toned
+        ink: '#1A1612', // near-black with a warm tint
+        accent: '#1B4332', // deep forest green
+        surface: '#EDEDEA', // light warm grey
+        borderLight: '#E2DED8',
       },
-      backdropBlur: {
-        xs: '2px',
-      },
-      boxShadow: {
-        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
-        'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.2)',
-        'card': '0 4px 24px -1px rgba(0, 0, 0, 0.06), 0 2px 8px -2px rgba(0, 0, 0, 0.04)',
-        'card-dark': '0 4px 24px -1px rgba(0, 0, 0, 0.3), 0 2px 8px -2px rgba(0, 0, 0, 0.2)',
+      fontFamily: {
+        serif: ['var(--font-playfair)', 'serif'],
+        sans: ['var(--font-jakarta)', 'sans-serif'],
       },
       animation: {
-        'fade-in': 'fadeIn 0.3s ease-out',
-        'slide-up': 'slideUp 0.3s ease-out',
+        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'card-enter': 'cardEnter 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
       },
       keyframes: {
-        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-        slideUp: { '0%': { opacity: '0', transform: 'translateY(10px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(15px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        cardEnter: {
+          '0%': { opacity: '0', transform: 'translateY(30px) rotate(1.5deg)' },
+          '100%': { opacity: '1', transform: 'translateY(0) rotate(1.5deg)' },
+        },
       },
+      boxShadow: {
+        'warm': '0 12px 32px -4px rgba(26, 22, 18, 0.08), 0 4px 12px -2px rgba(26, 22, 18, 0.04)',
+      }
     },
   },
   plugins: [],
