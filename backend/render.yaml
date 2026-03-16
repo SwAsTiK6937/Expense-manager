@@ -1,0 +1,22 @@
+# Render Blueprint – deploy with "New > Blueprint" on Render dashboard
+# or just configure manually using the settings below.
+
+services:
+  - type: web
+    name: expense-tracker-api
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # set manually in Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: PORT
+        value: 10000
