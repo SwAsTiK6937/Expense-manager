@@ -16,8 +16,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-900">
-        <div className="animate-pulse text-slate-500 dark:text-slate-400">Loading…</div>
+      <div className="min-h-screen flex items-center justify-center bg-page">
+        <div className="animate-pulse text-ink/50 font-serif">Loading...</div>
       </div>
     );
   }
@@ -25,9 +25,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-page flex flex-col">
       <Nav />
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">{children}</main>
+      <main className="flex-1 w-full bg-page">
+        {children}
+      </main>
     </div>
   );
 }
