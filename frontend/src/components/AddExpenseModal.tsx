@@ -53,7 +53,7 @@ export function AddExpenseModal({ open, onClose, onSaved, edit }: AddExpenseModa
       onSaved();
       onClose();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save');
+      setError(err instanceof Error ? err.message : 'Transaction save failed');
     } finally {
       setLoading(false);
     }
@@ -63,68 +63,95 @@ export function AddExpenseModal({ open, onClose, onSaved, edit }: AddExpenseModa
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-900/50 dark:bg-slate-950/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="card relative w-full max-w-md p-6 animate-slide-up">
-        <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-          {edit ? 'Edit expense' : 'Add expense'}
+      {/* Editorial backdrop - solid but semitransparent */}
+      <div className="absolute inset-0 bg-ink/30 backdrop-blur-[2px]" onClick={onClose} />
+      
+      {/* Rigid sharp card */}
+      <div className="relative w-full max-w-lg bg-white border border-borderLight shadow-warm p-8 sm:p-12 animate-fade-in-up font-sans rounded-[2px]">
+        <h2 className="text-[32px] font-serif leading-tight tracking-tight text-ink mb-2">
+          {edit ? 'Edit Record' : 'New Add'}
         </h2>
-        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+        <p className="text-[14px] text-ink/60 mb-8">Maintain the precision of your financial ledger.</p>
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="rounded-xl bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 px-4 py-2 text-sm">
+            <div className="bg-red-50 border border-red-100 text-red-700 px-4 py-3 rounded-[2px] text-sm font-medium animate-fade-in">
               {error}
             </div>
           )}
-          <div>
-            <label className="label">Amount</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              className="input"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0.00"
-              required
-            />
+
+          <div className="grid grid-cols-2 gap-6">
+            <div className="group relative">
+              <label className="block text-[12px] uppercase tracking-[0.08em] text-ink font-bold mb-2 transition-all duration-200 group-focus-within:-translate-y-[1px] group-focus-within:text-accent">
+                Amount (₹)
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="0.00"
+                required
+                className="w-full h-[48px] bg-[#FAF8F3] border border-[#D8D3CB] rounded-[2px] px-4 text-[15px] text-ink font-serif placeholder:font-sans placeholder:italic placeholder:text-[#B0A898] outline-none transition-all duration-200 focus:border-accent focus:bg-accent/[0.04]"
+              />
+            </div>
+            <div className="group relative">
+              <label className="block text-[12px] uppercase tracking-[0.08em] text-ink font-bold mb-2 transition-all duration-200 group-focus-within:-translate-y-[1px] group-focus-within:text-accent">
+                Category
+              </label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full h-[48px] bg-[#FAF8F3] border border-[#D8D3CB] rounded-[2px] px-4 text-[14px] font-medium text-ink outline-none transition-all duration-200 focus:border-accent focus:bg-accent/[0.04] appearance-none"
+              >
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
+            </div>
           </div>
-          <div>
-            <label className="label">Category</label>
-            <select
-              className="input"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="label">Date</label>
+
+          <div className="group relative">
+            <label className="block text-[12px] uppercase tracking-[0.08em] text-ink font-bold mb-2 transition-all duration-200 group-focus-within:-translate-y-[1px] group-focus-within:text-accent">
+              Date
+            </label>
             <input
               type="date"
-              className="input"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
+              className="w-full h-[48px] bg-[#FAF8F3] border border-[#D8D3CB] rounded-[2px] px-4 text-[14px] text-ink font-sans outline-none transition-all duration-200 focus:border-accent focus:bg-accent/[0.04]"
             />
           </div>
-          <div>
-            <label className="label">Description (optional)</label>
+
+          <div className="group relative">
+            <label className="block text-[12px] uppercase tracking-[0.08em] text-ink font-bold mb-2 transition-all duration-200 group-focus-within:-translate-y-[1px] group-focus-within:text-accent">
+              Narrative (optional)
+            </label>
             <input
               type="text"
-              className="input"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="What was it for?"
+              placeholder="Provide context for this deduction..."
+              className="w-full h-[48px] bg-[#FAF8F3] border border-[#D8D3CB] rounded-[2px] px-4 text-[15px] text-ink placeholder:text-[#B0A898] placeholder:italic outline-none transition-all duration-200 focus:border-accent focus:bg-accent/[0.04]"
             />
           </div>
-          <div className="flex gap-3 pt-2">
-            <button type="button" onClick={onClose} className="btn-ghost flex-1">
+
+          <div className="flex gap-4 pt-4 border-t border-borderLight mt-8 pb-1">
+            <button 
+              type="button" 
+              onClick={onClose} 
+              className="flex-1 h-[48px] text-[13px] uppercase tracking-wide font-bold text-ink/60 transition-colors hover:text-ink hover:bg-page rounded-[2px]"
+            >
               Cancel
             </button>
-            <button type="submit" className="btn-primary flex-1" disabled={loading}>
-              {loading ? 'Saving…' : edit ? 'Update' : 'Add'}
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="flex-1 h-[48px] bg-accent text-white rounded-[2px] text-[14px] font-medium tracking-wide transition-colors duration-150 hover:bg-[#133225] disabled:opacity-70"
+            >
+              {loading ? 'Saving...' : edit ? 'Update Record' : 'Commit'}
             </button>
           </div>
         </form>
